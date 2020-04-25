@@ -1,4 +1,4 @@
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('apollo-server-lambda');
 const typeDefs = require('./schema');
 const { createStore } = require('./utils');
 const resolvers = require('./resolvers');
@@ -12,9 +12,15 @@ const server = new ApolloServer({
 	resolvers,
 	dataSources: () => ({
 		cityAPI: new CityAPI({ store })
-	})
+	}),
+	playground: { 
+		endpoint: "/dev/graphql" 
+	}
 });
 
-server.listen().then(({ url }) => {
-	console.log(`🚀 Server ready at ${url}`);
+exports.graphqlHandler = server.createHandler({
+	cors: {
+		origin: '*',
+		credentials: true,
+	},
 });

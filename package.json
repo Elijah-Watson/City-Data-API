@@ -2,16 +2,17 @@
   "name": "city-data-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/graphql.js",
   "scripts": {
-    "start": "nodemon src/index.js",
-    "start:ci": "node src/index.js"
+    "dev": "nodemon src/graphql.js",
+    "start": "node src/graphql.js"
   },
   "author": "Elijah Watson",
   "license": "MIT",
   "dependencies": {
     "apollo-datasource": "^0.7.0",
     "apollo-server": "^2.12.0",
+    "apollo-server-lambda": "^2.12.0",
     "dotenv": "^8.2.0",
     "graphql": "^15.0.0",
     "mysql2": "^2.1.0",

@@ -1,6 +1,6 @@
 const { DataSource } = require('apollo-datasource');
-const { UserInputError } = require('apollo-server');
-const Op = require('Sequelize').Op;
+const { UserInputError } = require('apollo-server-lambda');
+const Op = require('sequelize').Op;
 
 class CityAPI extends DataSource {
 	constructor({ store }) {
