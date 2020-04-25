@@ -12,10 +12,7 @@ const server = new ApolloServer({
 	resolvers,
 	dataSources: () => ({
 		cityAPI: new CityAPI({ store })
-	}),
-	playground: { 
-		endpoint: "/dev/graphql" 
-	}
+	})
 });
 
 exports.graphqlHandler = server.createHandler({
