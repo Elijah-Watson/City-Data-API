@@ -15,4 +15,10 @@ functions:
     - http:
         path: graphql
         method: get
-        cors: true
+		cors: true
+package:
+  exclude:
+    - .env
+    - apollo.config.js
+plugins:
+  - serverless-offline

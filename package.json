@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/graphql.js",
   "scripts": {
-    "dev": "nodemon src/graphql.js",
+    "dev": "serverless offline",
     "start": "node src/graphql.js"
   },
   "author": "Elijah Watson",
@@ -22,6 +22,7 @@
     "apollo": "^2.27.3",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
-    "nodemon": "^2.0.3"
+    "serverless": "^1.68.0",
+    "serverless-offline": "^6.1.4"
   }
 }
