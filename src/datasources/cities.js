@@ -131,7 +131,7 @@ class CityAPI extends DataSource {
 			},
 		});
 		return found && found.length
-			? found
+			? found.sort((a, b) => ids.indexOf(a.dataValues.id.toString()) - ids.indexOf(b.dataValues.id.toString()))
 			: [];
 	}
 
