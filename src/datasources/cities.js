@@ -258,10 +258,28 @@ class CityAPI extends DataSource {
 		return { min, max };
 	}
 
-	async getJobRangeByField({ field }) {
-		const min = await this.store.jobs.min(field, { where: { [field]: { [Op.gt]: 0 } } } );
-		const max = await this.store.jobs.max(field);
-		return { min, max };
+	async getJobRangeByField({ field, jobTitle }) {
+		const min = await this.store.jobs.min(field,
+			{
+				where: {
+					title: jobTitle || '',
+					[field]: {
+						[Op.gt]: 0
+					}
+				}
+			});
+		const max = await this.store.jobs.max(field,
+			{
+				where: {
+					title: jobTitle || '',
+					[field]: {
+						[Op.gt]: 0
+					}
+				}
+			});
+		return min && max ? 
+			{ min, max } : 
+			{ min: null, max: null };
 	}
 }
 

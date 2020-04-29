@@ -36,15 +36,15 @@ module.exports = {
 	Job: {
 		city: (job, __, { dataSources }) =>
 			dataSources.cityAPI.getCityByJobId({ jobId: job.id }),
-		totalJobsRange: (_, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'totalJobs' }),
-		jobsPerThousandRange: (_, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'jobsPerThousand' }),
-		locationQuotientRange: (_, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'locationQuotient' }),
-		averageAnnualSalaryRange: (_, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'averageAnnualSalary' }),
-		medianAnnualSalaryRange: (_, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'medianAnnualSalary' }),
+		totalJobsRange: (job, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'totalJobs', jobTitle: job.title }),
+		jobsPerThousandRange: (job, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'jobsPerThousand', jobTitle: job.title }),
+		locationQuotientRange: (job, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'locationQuotient', jobTitle: job.title }),
+		averageAnnualSalaryRange: (job, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'averageAnnualSalary', jobTitle: job.title }),
+		medianAnnualSalaryRange: (job, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'medianAnnualSalary', jobTitle: job.title }),
 	}
 }
