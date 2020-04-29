@@ -4,6 +4,7 @@ provider:
   runtime: nodejs12.x
   profile: serverless-admin
   region: ${opt:region, 'us-east-2'}
+  stage: ${opt:stage, 'dev'}
 functions:
   graphql:
     handler: src/graphql.graphqlHandler

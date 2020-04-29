@@ -5,7 +5,8 @@
   "main": "src/graphql.js",
   "scripts": {
     "dev": "serverless offline --httpPort 3001",
-    "deploy": "serverless deploy"
+    "deploy:dev": "serverless deploy --stage qa",
+	"deploy:prod": "serverless deploy --stage production"
   },
   "author": "Elijah Watson",
   "license": "MIT",
