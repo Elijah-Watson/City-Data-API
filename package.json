@@ -4,26 +4,24 @@
   "description": "",
   "main": "src/graphql.js",
   "scripts": {
-    "dev": "serverless offline --httpPort 3001",
-    "deploy:dev": "serverless deploy --stage qa",
-    "deploy:prod": "serverless deploy --stage production"
+    "dev": "nodemon src/graphql.js",
+    "start": "node src/graphql.js"
   },
   "author": "Elijah Watson",
   "license": "MIT",
   "dependencies": {
     "apollo-datasource": "^0.7.0",
     "apollo-server": "^2.12.0",
-    "apollo-server-lambda": "^2.12.0",
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
-    "mysql2": "^2.1.0",
+    "pg": "^8.0.3",
+    "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.7"
   },
   "devDependencies": {
     "apollo": "^2.27.3",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
-    "serverless": "^1.68.0",
-    "serverless-offline": "^6.1.4"
+    "nodemon": "^2.0.3"
   }
 }

@@ -1,5 +1,5 @@
 const { DataSource } = require('apollo-datasource');
-const { UserInputError } = require('apollo-server-lambda');
+const { UserInputError } = require('apollo-server');
 const Op = require('sequelize').Op;
 
 class CityAPI extends DataSource {
@@ -269,7 +269,6 @@ class CityAPI extends DataSource {
 	}
 
 	async getJobByCityIdAndTitle({ cityId, jobTitle }) {
-		console.log(cityId, jobTitle);
 		const found = await this.store.Job.findOne({
 			where: { location: cityId },
 			include: [{
@@ -303,7 +302,6 @@ class CityAPI extends DataSource {
 	}
 
 	async getJobRangeByField({ field, jobId }) {
-		console.log(jobId);
 		const job = await this.store.Job.findOne({
 			where: { id: jobId || 0 },
 		});

@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const Op = SQL.Op;
 module.exports.createStore = () => {
 	const db = new SQL({
-		dialect: 'mysql',
+		dialect: 'postgres',
 		database: process.env.DB_NAME,
 		username: process.env.DB_USERNAME,
 		password: process.env.DB_PASSWORD,
