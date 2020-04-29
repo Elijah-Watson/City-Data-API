@@ -18,6 +18,16 @@ module.exports = {
 	City: {
 		state: (city, __, { dataSources }) =>
 			dataSources.cityAPI.getStateByCityId({ cityId: city.id }),
+		populationRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getCityRangeByField({ field: 'population' }),
+		costOfLivingRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getCityRangeByField({ field: 'costOfLiving' }),
+		violentCrimeRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getCityRangeByField({ field: 'violentCrime' }),
+		propertyCrimeRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getCityRangeByField({ field: 'propertyCrime' }),
+		happinessRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getCityRangeByField({ field: 'happiness' }),
 		jobs: (city, __, { dataSources }) =>
 			dataSources.cityAPI.getJobsByCityId({ cityId: city.id }),
 		job: (city, { title }, { dataSources }) =>
@@ -25,6 +35,16 @@ module.exports = {
 	},
 	Job: {
 		city: (job, __, { dataSources }) =>
-			dataSources.cityAPI.getCityByJobId({ jobId: job.id })
+			dataSources.cityAPI.getCityByJobId({ jobId: job.id }),
+		totalJobsRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'totalJobs' }),
+		jobsPerThousandRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'jobsPerThousand' }),
+		locationQuotientRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'locationQuotient' }),
+		averageAnnualSalaryRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'averageAnnualSalary' }),
+		medianAnnualSalaryRange: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getJobRangeByField({ field: 'medianAnnualSalary' }),
 	}
 }

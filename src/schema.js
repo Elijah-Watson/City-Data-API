@@ -19,6 +19,16 @@ type Query {
 	jobs(cityName: String, stateName: String): [Job]
 }
 
+type IntRange {
+	min: Int
+	max: Int
+}
+
+type FloatRange {
+	min: Float
+	max: Float
+}
+
 type State {
 	id: ID
 	name: String
@@ -31,10 +41,15 @@ type City {
 	name: String
 	state: State
 	population: Int
+	populationRange: IntRange
 	costOfLiving: Float
+	costOfLivingRange: FloatRange
 	violentCrime: Int
+	violentCrimeRange: IntRange
 	propertyCrime: Int
+	propertyCrimeRange: IntRange
 	happiness: Float
+	happinessRange: FloatRange
 	jobs: [Job]
 	job(title: String!): Job
 }
@@ -44,10 +59,15 @@ type Job {
 	title: String
 	city: City
 	totalJobs: Int
+	totalJobsRange: IntRange
 	jobsPerThousand: Float
+	jobsPerThousandRange: FloatRange
 	locationQuotient: Float
+	locationQuotientRange: FloatRange
 	averageAnnualSalary: Int
+	averageAnnualSalaryRange: IntRange
 	medianAnnualSalary: Int
+	medianAnnualSalaryRange: IntRange
 }
 `;
 
