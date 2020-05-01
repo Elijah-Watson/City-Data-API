@@ -11,10 +11,10 @@ module.exports.createStore = () => {
 		host: process.env.DB_HOST,
 		port: process.env.DB_PORT,
 		pool: {
-			max: 5,
+			max: 1,
 			min: 0,
 			acquire: 30000,
-			idle: 10000
+			idle: 10
 		},
 		define: {
 			timestamps: false
