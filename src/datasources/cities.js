@@ -167,6 +167,31 @@ class CityAPI extends DataSource {
 			: {};
 	}
 
+	async getJobTitles() {
+		const found = await this.store.jobTitles.findAll();
+		return found && found.length
+			? found.map(jobTitle => jobTitle.title)
+			: [];
+	}
+	
+	async getJobTitleByJobId({ jobId }) {
+		const found = await this.store.jobTitles.findOne({
+			where: { id: jobId },
+		});
+		return found
+			? found.title
+			: {};
+	}
+
+	async getJobTitleIdByJobTitle({ jobTitle }) {
+		const found = await this.store.jobTitles.findOne({
+			where: { title: jobTitle },
+		});
+		return found
+			? found.id
+			: {};
+	}
+
 	async getJobs({ cityName, stateName }) {
 		let jobs = [];
 		if (cityName && stateName) {
@@ -233,9 +258,10 @@ class CityAPI extends DataSource {
 			: [];
 	}
 
-	async getJobByCityIdAndTitle({ cityId, title }) {
+	async getJobByCityIdAndTitle({ cityId, jobTitle }) {
+		const jobTitleId = await this.getJobTitleIdByJobTitle({ jobTitle });
 		const found = await this.store.jobs.findOne({
-			where: { location: cityId, title },
+			where: { location: cityId, titleId: jobTitleId },
 		});
 		return found
 			? found
@@ -244,8 +270,9 @@ class CityAPI extends DataSource {
 
 	async getJobByTitleAndLocation({ jobTitle, cityName, stateName }) {
 		const city = await this.getCityByNameAndState({ cityName, stateName });
+		const jobTitleId = await this.getJobTitleIdByJobTitle({ jobTitle });
 		const found = await this.store.jobs.findOne({
-			where: { title: jobTitle, location: city.id },
+			where: { titleId: jobTitleId, location: city.id },
 		});
 		return found
 			? found
@@ -258,11 +285,15 @@ class CityAPI extends DataSource {
 		return { min, max };
 	}
 
-	async getJobRangeByField({ field, jobTitle }) {
+	async getJobRangeByField({ field, jobId }) {
+		const job = await this.store.jobs.findOne({
+			where: { id: jobId },
+		});
+		const jobTitleId = job.titleId;
 		const min = await this.store.jobs.min(field,
 			{
 				where: {
-					title: jobTitle || '',
+					titleId: jobTitleId || 0,
 					[field]: {
 						[Op.gt]: 0
 					}
@@ -271,7 +302,7 @@ class CityAPI extends DataSource {
 		const max = await this.store.jobs.max(field,
 			{
 				where: {
-					title: jobTitle || '',
+					titleId: jobTitleId || 0,
 					[field]: {
 						[Op.gt]: 0
 					}

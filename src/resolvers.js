@@ -9,7 +9,9 @@ module.exports = {
 		job: (_, { title, cityName, stateName }, { dataSources }) =>
 			dataSources.cityAPI.getJobByTitleAndLocation({ jobTitle: title, cityName, stateName }),
 		jobs: (_, { cityName, stateName }, { dataSources }) =>
-			dataSources.cityAPI.getJobs({ cityName, stateName })
+			dataSources.cityAPI.getJobs({ cityName, stateName }),
+		jobTitles: (_, __, { dataSources }) =>
+			dataSources.cityAPI.getJobTitles()
 	},
 	State: {
 		cities: (state, __, { dataSources }) =>
@@ -31,20 +33,22 @@ module.exports = {
 		jobs: (city, __, { dataSources }) =>
 			dataSources.cityAPI.getJobsByCityId({ cityId: city.id }),
 		job: (city, { title }, { dataSources }) =>
-			dataSources.cityAPI.getJobByCityIdAndTitle({ cityId: city.id, title })
+			dataSources.cityAPI.getJobByCityIdAndTitle({ cityId: city.id, jobTitle: title })
 	},
 	Job: {
+		title: (job, __, { dataSources }) =>
+			dataSources.cityAPI.getJobTitleByJobId({ jobId: job.titleId }),
 		city: (job, __, { dataSources }) =>
 			dataSources.cityAPI.getCityByJobId({ jobId: job.id }),
 		totalJobsRange: (job, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'totalJobs', jobTitle: job.title }),
+			dataSources.cityAPI.getJobRangeByField({ field: 'totalJobs', jobId: job.id }),
 		jobsPerThousandRange: (job, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'jobsPerThousand', jobTitle: job.title }),
+			dataSources.cityAPI.getJobRangeByField({ field: 'jobsPerThousand', jobId: job.id }),
 		locationQuotientRange: (job, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'locationQuotient', jobTitle: job.title }),
+			dataSources.cityAPI.getJobRangeByField({ field: 'locationQuotient', jobId: job.id }),
 		averageAnnualSalaryRange: (job, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'averageAnnualSalary', jobTitle: job.title }),
+			dataSources.cityAPI.getJobRangeByField({ field: 'averageAnnualSalary', jobId: job.id }),
 		medianAnnualSalaryRange: (job, __, { dataSources }) =>
-			dataSources.cityAPI.getJobRangeByField({ field: 'medianAnnualSalary', jobTitle: job.title }),
+			dataSources.cityAPI.getJobRangeByField({ field: 'medianAnnualSalary', jobId: job.id }),
 	}
 }

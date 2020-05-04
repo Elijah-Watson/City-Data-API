@@ -80,9 +80,9 @@ module.exports.createStore = () => {
 		}
 	});
 
-	const jobs = db.define('Jobs', {
+	const jobTitles = db.define('Job_Titles', {
 		id: {
-			field: 'job_id',
+			field: 'job_title_id',
 			type: SQL.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
@@ -90,6 +90,23 @@ module.exports.createStore = () => {
 		title: {
 			field: 'job_title',
 			type: SQL.STRING
+		}
+	});
+
+	const jobs = db.define('Jobs', {
+		id: {
+			field: 'job_id',
+			type: SQL.INTEGER,
+			primaryKey: true,
+			autoIncrement: true
+		},
+		titleId: {
+			field: 'job_title_id',
+			type: SQL.INTEGER,
+			references: {
+				model: jobTitles,
+				key: 'job_title_id',
+			}
 		},
 		location: {
 			field: 'city_id',
@@ -121,5 +138,5 @@ module.exports.createStore = () => {
 		}
 	});
 
-	return { states, cities, jobs };
+	return { states, cities, jobTitles, jobs };
 }

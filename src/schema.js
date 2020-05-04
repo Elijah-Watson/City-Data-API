@@ -17,6 +17,7 @@ type Query {
 	cities(stateName: String, ids: [ID]): [City]
 	job(title: String!, cityName: String!, stateName: String!): Job
 	jobs(cityName: String, stateName: String): [Job]
+	jobTitles: [String]
 }
 
 type IntRange {
