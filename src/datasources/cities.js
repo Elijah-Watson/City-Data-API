@@ -19,7 +19,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getStates() {
-		const found = await this.store.State.findAll();
+		const found = await this.store.State.findAll({ order: [['name']] });
 		return found && found.length
 			? found
 			: [];
@@ -99,7 +99,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getAllCities() {
-		const found = await this.store.City.findAll();
+		const found = await this.store.City.findAll({ order: [['name']] });
 		return found && found.length
 			? found
 			: [];
@@ -115,6 +115,7 @@ class CityAPI extends DataSource {
 				},
 				state: state.id
 			},
+			order: [['name']]
 		});
 		return found && found.length
 			? found
@@ -129,6 +130,7 @@ class CityAPI extends DataSource {
 					[Op.or]: ids
 				}
 			},
+			order: [['name']]
 		});
 		return found && found.length
 			? found.sort((a, b) => ids.indexOf(a.dataValues.id.toString()) - ids.indexOf(b.dataValues.id.toString()))
@@ -143,6 +145,7 @@ class CityAPI extends DataSource {
 	async getCitiesByStateId({ stateId }) {
 		const found = await this.store.City.findAll({
 			where: { state: stateId },
+			order: [['name']]
 		});
 		return found && found.length
 			? found
@@ -168,7 +171,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getJobTitles() {
-		const found = await this.store.JobTitle.findAll();
+		const found = await this.store.JobTitle.findAll({ order: [['title']] });
 		return found && found.length
 			? found.map(jobTitle => jobTitle.title)
 			: [];
@@ -190,7 +193,13 @@ class CityAPI extends DataSource {
 	}
 
 	async getAllJobs() {
-		const found = await this.store.Job.findAll({ include: [{ model: this.store.JobTitle, as: 'JobTitle' }] });
+		const found = await this.store.Job.findAll({
+			include: [{
+				model: this.store.JobTitle,
+				as: 'JobTitle'
+			}],
+			order: [[{ model: this.store.JobTitle, as: 'JobTitle' }, 'title', 'asc']]
+		});
 		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
@@ -206,7 +215,11 @@ class CityAPI extends DataSource {
 					[Op.or]: locations
 				}
 			},
-			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
+			include: [{
+				model: this.store.JobTitle,
+				as: 'JobTitle'
+			},],
+			order: [[{ model: this.store.JobTitle, as: 'JobTitle' }, 'title', 'asc']]
 		});
 		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
@@ -223,7 +236,11 @@ class CityAPI extends DataSource {
 					[Op.or]: locations
 				}
 			},
-			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
+			include: [{
+				model: this.store.JobTitle,
+				as: 'JobTitle'
+			}],
+			order: [[{ model: this.store.JobTitle, as: 'JobTitle' }, 'title', 'asc']]
 		});
 		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
@@ -239,7 +256,11 @@ class CityAPI extends DataSource {
 	async getJobsByCityId({ cityId }) {
 		const found = await this.store.Job.findAll({
 			where: { location: cityId },
-			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
+			include: [{
+				model: this.store.JobTitle,
+				as: 'JobTitle'
+			}],
+			order: [[{ model: this.store.JobTitle, as: 'JobTitle' }, 'title', 'asc']]
 		});
 		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
@@ -250,8 +271,8 @@ class CityAPI extends DataSource {
 	async getJobByCityIdAndTitle({ cityId, jobTitle }) {
 		const found = await this.store.Job.findOne({
 			where: { location: cityId },
-			include: [{ 
-				model: this.store.JobTitle, 
+			include: [{
+				model: this.store.JobTitle,
 				as: 'JobTitle',
 				where: { title: jobTitle }
 			}]
@@ -275,7 +296,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getCityRangeByField({ field }) {
-		const min = await this.store.City.min(field, { where: { [field]: { [Op.gt]: 0 } } } );
+		const min = await this.store.City.min(field, { where: { [field]: { [Op.gt]: 0 } } });
 		const max = await this.store.City.max(field);
 		return { min, max };
 	}
@@ -303,8 +324,8 @@ class CityAPI extends DataSource {
 					}
 				}
 			});
-		return min && max ? 
-			{ min, max } : 
+		return min && max ?
+			{ min, max } :
 			{ min: null, max: null };
 	}
 }
