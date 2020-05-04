@@ -191,7 +191,7 @@ class CityAPI extends DataSource {
 
 	async getAllJobs() {
 		const found = await this.store.Job.findAll({ include: [{ model: this.store.JobTitle, as: 'JobTitle' }] });
-		found.forEach(job => job.title = job.JobTitle.title);
+		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
@@ -208,7 +208,7 @@ class CityAPI extends DataSource {
 			},
 			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
-		found.forEach(job => job.title = job.JobTitle.title);
+		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
@@ -225,7 +225,7 @@ class CityAPI extends DataSource {
 			},
 			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
-		found.forEach(job => job.title = job.JobTitle.title);
+		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
@@ -241,7 +241,7 @@ class CityAPI extends DataSource {
 			where: { location: cityId },
 			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
-		found.forEach(job => job.title = job.JobTitle.title);
+		if (found) found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
@@ -249,10 +249,14 @@ class CityAPI extends DataSource {
 
 	async getJobByCityIdAndTitle({ cityId, jobTitle }) {
 		const found = await this.store.Job.findOne({
-			where: { location: cityId, titleId: jobTitle },
-			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
+			where: { location: cityId },
+			include: [{ 
+				model: this.store.JobTitle, 
+				as: 'JobTitle',
+				where: { title: jobTitle }
+			}]
 		});
-		found.title = found.JobTitle.title;
+		if (found) found.title = found.JobTitle.title;
 		return found
 			? found
 			: {};
@@ -264,7 +268,7 @@ class CityAPI extends DataSource {
 			where: { titleId: jobTitle, location: city.id },
 			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
-		found.title = found.JobTitle.title;
+		if (found) found.title = found.JobTitle.title;
 		return found
 			? found
 			: {};
@@ -278,9 +282,9 @@ class CityAPI extends DataSource {
 
 	async getJobRangeByField({ field, jobId }) {
 		const job = await this.store.Job.findOne({
-			where: { id: jobId },
+			where: { id: jobId || 0 },
 		});
-		const jobTitleId = job.titleId;
+		const jobTitleId = job ? job.titleId : 0;
 		const min = await this.store.Job.min(field,
 			{
 				where: {
