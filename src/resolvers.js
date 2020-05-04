@@ -36,8 +36,6 @@ module.exports = {
 			dataSources.cityAPI.getJobByCityIdAndTitle({ cityId: city.id, jobTitle: title })
 	},
 	Job: {
-		title: (job, __, { dataSources }) =>
-			dataSources.cityAPI.getJobTitleByJobId({ jobId: job.titleId }),
 		city: (job, __, { dataSources }) =>
 			dataSources.cityAPI.getCityByJobId({ jobId: job.id }),
 		totalJobsRange: (job, __, { dataSources }) =>

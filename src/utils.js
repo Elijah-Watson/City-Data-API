@@ -22,7 +22,10 @@ module.exports.createStore = () => {
 		logging: false,
 	});
 
-	const states = db.define('States', {
+	const Model = SQL.Model;
+
+	class State extends Model { }
+	State.init({
 		id: {
 			field: 'state_id',
 			type: SQL.INTEGER,
@@ -37,9 +40,13 @@ module.exports.createStore = () => {
 			field: 'state_name',
 			type: SQL.STRING
 		}
+	}, {
+		sequelize: db,
+		modelName: 'states'
 	});
 
-	const cities = db.define('Cities', {
+	class City extends Model { }
+	City.init({
 		id: {
 			field: 'city_id',
 			type: SQL.INTEGER,
@@ -54,7 +61,7 @@ module.exports.createStore = () => {
 			field: 'state_id',
 			type: SQL.INTEGER,
 			references: {
-				model: states,
+				model: State,
 				key: 'state_id',
 			}
 		},
@@ -64,7 +71,7 @@ module.exports.createStore = () => {
 		},
 		costOfLiving: {
 			field: 'cost_of_living',
-			type: SQL.DECIMAL(3,2)
+			type: SQL.DECIMAL(3, 2)
 		},
 		violentCrime: {
 			field: 'violent_crime',
@@ -78,9 +85,13 @@ module.exports.createStore = () => {
 			field: 'happiness',
 			type: SQL.DECIMAL(5, 2)
 		}
+	}, {
+		sequelize: db,
+		modelName: 'cities'
 	});
 
-	const jobTitles = db.define('Job_Titles', {
+	class JobTitle extends Model { }
+	JobTitle.init({
 		id: {
 			field: 'job_title_id',
 			type: SQL.INTEGER,
@@ -91,9 +102,13 @@ module.exports.createStore = () => {
 			field: 'job_title',
 			type: SQL.STRING
 		}
+	}, {
+		sequelize: db,
+		modelName: 'job_titles'
 	});
 
-	const jobs = db.define('Jobs', {
+	class Job extends Model { }
+	Job.init({
 		id: {
 			field: 'job_id',
 			type: SQL.INTEGER,
@@ -104,7 +119,7 @@ module.exports.createStore = () => {
 			field: 'job_title_id',
 			type: SQL.INTEGER,
 			references: {
-				model: jobTitles,
+				model: JobTitle,
 				key: 'job_title_id',
 			}
 		},
@@ -112,7 +127,7 @@ module.exports.createStore = () => {
 			field: 'city_id',
 			type: SQL.INTEGER,
 			references: {
-				model: cities,
+				model: City,
 				key: 'city_id',
 			}
 		},
@@ -136,7 +151,12 @@ module.exports.createStore = () => {
 			field: 'median_annual_salary',
 			type: SQL.INTEGER
 		}
+	}, {
+		sequelize: db,
+		modelName: 'jobs'
 	});
 
-	return { states, cities, jobTitles, jobs };
+	Job.hasOne(JobTitle, { as: 'JobTitle', foreignKey: 'id', sourceKey: 'titleId' });
+
+	return { State, City, JobTitle, Job };
 }

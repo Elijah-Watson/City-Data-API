@@ -19,18 +19,18 @@ class CityAPI extends DataSource {
 	}
 
 	async getStates() {
-		const found = await this.store.states.findAll();
+		const found = await this.store.State.findAll();
 		return found && found.length
 			? found
 			: [];
 	}
 
 	async getStateByCityId({ cityId }) {
-		const city = await this.store.cities.findOne({
+		const city = await this.store.City.findOne({
 			where: { id: cityId },
 		});
 		const stateId = city.state;
-		const found = await this.store.states.findOne({
+		const found = await this.store.State.findOne({
 			where: { id: stateId },
 		});
 		return found
@@ -39,7 +39,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getStateByName({ stateName }) {
-		const found = await this.store.states.findOne({
+		const found = await this.store.State.findOne({
 			where: { name: stateName },
 		});
 		return found
@@ -48,7 +48,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getStateByCode({ stateCode }) {
-		const found = await this.store.states.findOne({
+		const found = await this.store.State.findOne({
 			where: { code: stateCode },
 		});
 		return found
@@ -68,7 +68,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getCityById({ cityId }) {
-		const found = await this.store.cities.findOne({
+		const found = await this.store.City.findOne({
 			where: { id: cityId },
 		});
 		return found
@@ -78,7 +78,7 @@ class CityAPI extends DataSource {
 
 	async getCityByNameAndState({ cityName, stateName }) {
 		const state = await this.getStateByName({ stateName });
-		const found = await this.store.cities.findOne({
+		const found = await this.store.City.findOne({
 			where: { name: cityName, state: state.id },
 		});
 		return found
@@ -99,7 +99,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getAllCities() {
-		const found = await this.store.cities.findAll();
+		const found = await this.store.City.findAll();
 		return found && found.length
 			? found
 			: [];
@@ -108,7 +108,7 @@ class CityAPI extends DataSource {
 	async getCitiesByStateNameAndIds({ stateName, ids }) {
 		if (ids.length <= 0) return [];
 		const state = await this.getStateByName({ stateName });
-		const found = await this.store.cities.findAll({
+		const found = await this.store.City.findAll({
 			where: {
 				id: {
 					[Op.or]: ids
@@ -123,7 +123,7 @@ class CityAPI extends DataSource {
 
 	async getCitiesByIds({ ids }) {
 		if (ids.length <= 0) return [];
-		const found = await this.store.cities.findAll({
+		const found = await this.store.City.findAll({
 			where: {
 				id: {
 					[Op.or]: ids
@@ -141,7 +141,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getCitiesByStateId({ stateId }) {
-		const found = await this.store.cities.findAll({
+		const found = await this.store.City.findAll({
 			where: { state: stateId },
 		});
 		return found && found.length
@@ -150,7 +150,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getCityById({ cityId }) {
-		const found = await this.store.cities.findOne({
+		const found = await this.store.City.findOne({
 			where: { id: cityId },
 		});
 		return found
@@ -159,7 +159,7 @@ class CityAPI extends DataSource {
 	}
 
 	async getCityByJobId({ jobId }) {
-		const job = await this.store.jobs.findOne({
+		const job = await this.store.Job.findOne({
 			where: { id: jobId || null },
 		});
 		return job
@@ -168,28 +168,10 @@ class CityAPI extends DataSource {
 	}
 
 	async getJobTitles() {
-		const found = await this.store.jobTitles.findAll();
+		const found = await this.store.JobTitle.findAll();
 		return found && found.length
 			? found.map(jobTitle => jobTitle.title)
 			: [];
-	}
-	
-	async getJobTitleByJobId({ jobId }) {
-		const found = await this.store.jobTitles.findOne({
-			where: { id: jobId },
-		});
-		return found
-			? found.title
-			: {};
-	}
-
-	async getJobTitleIdByJobTitle({ jobTitle }) {
-		const found = await this.store.jobTitles.findOne({
-			where: { title: jobTitle },
-		});
-		return found
-			? found.id
-			: {};
 	}
 
 	async getJobs({ cityName, stateName }) {
@@ -208,7 +190,8 @@ class CityAPI extends DataSource {
 	}
 
 	async getAllJobs() {
-		const found = await this.store.jobs.findAll();
+		const found = await this.store.Job.findAll({ include: [{ model: this.store.JobTitle, as: 'JobTitle' }] });
+		found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
@@ -217,13 +200,15 @@ class CityAPI extends DataSource {
 	async getJobsByStateName({ stateName }) {
 		const cities = await this.getCitiesByStateName({ stateName });
 		const locations = cities.map(city => city.dataValues.id);
-		const found = await this.store.jobs.findAll({
+		const found = await this.store.Job.findAll({
 			where: {
 				location: {
 					[Op.or]: locations
 				}
 			},
+			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
+		found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
@@ -232,13 +217,15 @@ class CityAPI extends DataSource {
 	async getJobsByStateId({ stateId }) {
 		const cities = await this.getCitiesByStateId({ stateId });
 		const locations = cities.map(city => city.dataValues.id);
-		const found = await this.store.jobs.findAll({
+		const found = await this.store.Job.findAll({
 			where: {
 				location: {
 					[Op.or]: locations
 				}
 			},
+			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
+		found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
@@ -250,19 +237,22 @@ class CityAPI extends DataSource {
 	}
 
 	async getJobsByCityId({ cityId }) {
-		const found = await this.store.jobs.findAll({
+		const found = await this.store.Job.findAll({
 			where: { location: cityId },
+			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
+		found.forEach(job => job.title = job.JobTitle.title);
 		return found && found.length
 			? found
 			: [];
 	}
 
 	async getJobByCityIdAndTitle({ cityId, jobTitle }) {
-		const jobTitleId = await this.getJobTitleIdByJobTitle({ jobTitle });
-		const found = await this.store.jobs.findOne({
-			where: { location: cityId, titleId: jobTitleId },
+		const found = await this.store.Job.findOne({
+			where: { location: cityId, titleId: jobTitle },
+			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
+		found.title = found.JobTitle.title;
 		return found
 			? found
 			: {};
@@ -270,27 +260,28 @@ class CityAPI extends DataSource {
 
 	async getJobByTitleAndLocation({ jobTitle, cityName, stateName }) {
 		const city = await this.getCityByNameAndState({ cityName, stateName });
-		const jobTitleId = await this.getJobTitleIdByJobTitle({ jobTitle });
-		const found = await this.store.jobs.findOne({
-			where: { titleId: jobTitleId, location: city.id },
+		const found = await this.store.Job.findOne({
+			where: { titleId: jobTitle, location: city.id },
+			include: [{ model: this.store.JobTitle, as: 'JobTitle' }]
 		});
+		found.title = found.JobTitle.title;
 		return found
 			? found
 			: {};
 	}
 
 	async getCityRangeByField({ field }) {
-		const min = await this.store.cities.min(field, { where: { [field]: { [Op.gt]: 0 } } } );
-		const max = await this.store.cities.max(field);
+		const min = await this.store.City.min(field, { where: { [field]: { [Op.gt]: 0 } } } );
+		const max = await this.store.City.max(field);
 		return { min, max };
 	}
 
 	async getJobRangeByField({ field, jobId }) {
-		const job = await this.store.jobs.findOne({
+		const job = await this.store.Job.findOne({
 			where: { id: jobId },
 		});
 		const jobTitleId = job.titleId;
-		const min = await this.store.jobs.min(field,
+		const min = await this.store.Job.min(field,
 			{
 				where: {
 					titleId: jobTitleId || 0,
@@ -299,7 +290,7 @@ class CityAPI extends DataSource {
 					}
 				}
 			});
-		const max = await this.store.jobs.max(field,
+		const max = await this.store.Job.max(field,
 			{
 				where: {
 					titleId: jobTitleId || 0,
