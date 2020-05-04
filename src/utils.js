@@ -42,7 +42,7 @@ module.exports.createStore = () => {
 		}
 	}, {
 		sequelize: db,
-		modelName: 'states'
+		modelName: 'States'
 	});
 
 	class City extends Model { }
@@ -87,7 +87,7 @@ module.exports.createStore = () => {
 		}
 	}, {
 		sequelize: db,
-		modelName: 'cities'
+		modelName: 'Cities'
 	});
 
 	class JobTitle extends Model { }
@@ -104,7 +104,7 @@ module.exports.createStore = () => {
 		}
 	}, {
 		sequelize: db,
-		modelName: 'job_titles'
+		modelName: 'Job_Titles'
 	});
 
 	class Job extends Model { }
@@ -153,7 +153,7 @@ module.exports.createStore = () => {
 		}
 	}, {
 		sequelize: db,
-		modelName: 'jobs'
+		modelName: 'Jobs'
 	});
 
 	Job.hasOne(JobTitle, { as: 'JobTitle', foreignKey: 'id', sourceKey: 'titleId' });
