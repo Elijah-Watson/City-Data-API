@@ -12,8 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "apollo-datasource": "^0.7.0",
-    "apollo-server": "^2.12.0",
-    "apollo-server-lambda": "^2.12.0",
+    "apollo-server": "^2.14.2",
+    "apollo-server-lambda": "^2.14.2",
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
     "mysql2": "^2.1.0",
@@ -23,7 +23,7 @@
     "apollo": "^2.27.3",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
-    "serverless": "^1.68.0",
+    "serverless": "^1.72.0",
     "serverless-offline": "^6.1.4"
   }
 }
