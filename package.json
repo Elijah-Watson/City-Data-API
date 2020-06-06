@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "apollo-datasource": "^0.7.0",
-    "apollo-server": "^2.12.0",
+    "apollo-server": "^2.14.2",
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
     "pg": "^8.0.3",
@@ -19,7 +19,7 @@
     "sequelize": "^5.21.7"
   },
   "devDependencies": {
-    "apollo": "^2.27.3",
+    "apollo": "^2.28.0",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
     "nodemon": "^2.0.3"
