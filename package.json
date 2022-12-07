@@ -23,7 +23,7 @@
     "apollo": "^2.27.3",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
-    "serverless": "^1.72.0",
+    "serverless": "^3.25.1",
     "serverless-offline": "^6.1.4"
   }
 }
